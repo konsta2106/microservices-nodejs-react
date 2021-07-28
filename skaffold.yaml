@@ -5,10 +5,10 @@ deploy:
     manifests:
       - ./infra/k8s/*
 build:
-  # local:
-  #   push: false
-  googleCloudBuild:
-    projectId: tickets-dev-320316
+  local:
+    push: false
+  # googleCloudBuild:
+  #   projectId: tickets-dev-320316
   artifacts:
     - image: us.gcr.io/tickets-dev-320316/auth
       context: auth
