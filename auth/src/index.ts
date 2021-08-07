@@ -8,10 +8,19 @@ import { signOutRouter } from './routes/signout';
 import { signUpRouter } from './routes/singup';
 import { errorHandler } from './middlewares/error-handler';
 import { NotFoundError } from './errors/not-found-error';
+import cookieSession from 'cookie-session';
 
 // Express app
 const app = express();
+// Allow proxy, behind ingress nginx
+app.set('trust proxy', true)
 app.use(json());
+app.use(cookieSession({
+  // Disable coockie encryption, JWT is secure enough to be transferred withoud encryption
+  signed: false,
+  // Require https
+  secure: true
+}))
 
 //Routes
 app.use(currentUserRouter);
@@ -27,6 +36,9 @@ app.use(errorHandler);
 
 // Start server
 const startServer = async () => {
+  if (!process.env.JWT_KEY) {
+    throw new Error('JWT_KEY variable not defined')
+  }
   try {
     // Connect to Database in kubernetes cluster
     await mongoose.connect('mongodb://auth-mongo-srv:27017/auth', {

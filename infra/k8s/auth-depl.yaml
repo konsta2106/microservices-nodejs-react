@@ -15,6 +15,12 @@ spec:
       containers:
         - name: auth
           image: us.gcr.io/tickets-dev-320316/auth
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
           # imagePullPolicy: Never
           resources:
             limits:

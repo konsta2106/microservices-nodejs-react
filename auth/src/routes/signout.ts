@@ -4,7 +4,9 @@ const router = express.Router()
 
 //Routes
 router.post('/api/users/signout', (req, res) => {
-  res.send('Current user konsta')
+  req.session =  null
+
+  res.send({})
 })
 
 export { router as signOutRouter }
