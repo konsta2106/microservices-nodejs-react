@@ -28,7 +28,7 @@ router.post(
     if (!existingUser) {
       const user = User.build({ email, password });
       await user.save();
-      console.log('User created. Update1');
+      // console.log('User created. Update1');
 
       // Generate JWT
       const userJwt = jwt.sign(
