@@ -5,8 +5,8 @@ import { currentUserRouter } from './routes/current-user';
 import { signInRouter } from './routes/signin';
 import { signOutRouter } from './routes/signout';
 import { signUpRouter } from './routes/singup';
-import { errorHandler } from './middlewares/error-handler';
-import { NotFoundError } from './errors/not-found-error';
+import { errorHandler } from '@motonet/common';
+import { NotFoundError } from '@motonet/common';
 import cookieSession from 'cookie-session';
 
 // Express app
