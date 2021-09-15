@@ -2,8 +2,12 @@ import express from 'express';
 import 'express-async-errors';
 import { json } from 'body-parser';
 import { errorHandler } from '@motonet/common';
-import { NotFoundError } from '@motonet/common';
+import { NotFoundError, currentUser } from '@motonet/common';
 import cookieSession from 'cookie-session';
+import { newPart } from './routes/newPart';
+import { getPartById } from './routes/partById';
+import { getallParts } from './routes/allParts';
+import { updatePart } from './routes/updatePart';
 
 // Express app
 const app = express();
@@ -16,8 +20,13 @@ app.use(cookieSession({
   // Require https. True when not in test environment. 
   secure: process.env.NODE_ENV !== 'test'
 }))
+app.use(currentUser)
 
 //Routes
+app.use(newPart)
+app.use(getPartById)
+app.use(getallParts)
+app.use(updatePart)
 
 //Error handler
 app.all('*', async (req, res) => {

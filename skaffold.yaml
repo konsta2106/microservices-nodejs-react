@@ -26,4 +26,12 @@ build:
         manual:
           - src: '/**/*.js'
             dest: .
+    - image: konsta2106/parts
+      context: parts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
 # konsta2106/auth
