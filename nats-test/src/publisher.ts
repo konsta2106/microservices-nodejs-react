@@ -11,7 +11,8 @@ stan.on('connect', async () => {
     id: "123",
     title: "test",
     price: 20,
-    description: "test descpr"
+    description: "test descpr",
+    createdBy: "dfsfd"
   })
 
   // const data = JSON.stringify({

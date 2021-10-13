@@ -1,6 +1,7 @@
 import nats from 'node-nats-streaming';
 import { randomBytes } from 'crypto';
 import PartCreatedListener from './events/part-created-listener';
+import PartCUpdatedListener from './events/part-updated-listener';
 
 const stan = nats.connect('parts', randomBytes(4).toString('hex'), {
   url: 'http://localhost:4222',
@@ -15,6 +16,7 @@ stan.on('connect', () => {
   });
 
   new PartCreatedListener(stan).listen()
+  new PartCUpdatedListener(stan).listen()
 });
 
 process.on('SIGINT', () => stan.close());

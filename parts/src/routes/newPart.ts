@@ -7,6 +7,8 @@ import {
   BadRequestError,
 } from '@motonet/common';
 import { Part } from '../models/part';
+import { PartCreatedPublisher } from '../events/publishers/part-created-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -31,6 +33,13 @@ router.post(
     if (!existingPart) {
       const part = Part.build({ title, price, description, createdBy });
       await part.save();
+      await new PartCreatedPublisher(natsWrapper.client).publish({
+        id: part.id,
+        title: part.title,
+        description: part.description,
+        price: part.price,
+        createdBy: part.createdBy
+      })
       res.status(201).send(part);
     }
   }

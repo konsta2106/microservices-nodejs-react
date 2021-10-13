@@ -10,3 +10,14 @@ export interface PartCreated {
     createdBy: string;
   };
 }
+
+export interface PartUpdated {
+  subject: Subjects.PartUpdated;
+  data: {
+    id: string;
+    title: string;
+    price: number;
+    description: string;
+    createdBy: string;
+  };
+}

@@ -16,8 +16,16 @@ spec:
         - name: parts
           image: konsta2106/parts
           env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: MONGO_URI
               value: 'mongodb://parts-mongo-srv:27017/parts'
+            - name: NATS_URL
+              value: http://nats-srv:4222
+            - name: NATS_CLUSTER_ID
+              value: parts
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:

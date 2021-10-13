@@ -7,6 +7,8 @@ import {
 } from '@motonet/common';
 import { Part } from '../models/part';
 import { body } from 'express-validator';
+import { PartUpdatedPublisher } from '../events/publishers/part-updated-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -37,6 +39,13 @@ router.put(
         description: req.body.description,
       });
       await result.save();
+      await new PartUpdatedPublisher(natsWrapper.client).publish({
+        id: result.id,
+        title: result.title,
+        description: result.description,
+        price: result.price,
+        createdBy: result.createdBy
+      })
       res.send(result);
     } catch (error) {
       next(error);
