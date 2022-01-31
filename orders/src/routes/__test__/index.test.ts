@@ -8,6 +8,7 @@ const buildPart = async () => {
   const part = Part.build({
     title: 'Test',
     price: 20,
+    id: mongoose.Types.ObjectId().toHexString()
   });
   await part.save();
 

@@ -38,7 +38,8 @@ router.post(
         title: part.title,
         description: part.description,
         price: part.price,
-        createdBy: part.createdBy
+        createdBy: part.createdBy,
+        version: part.version
       })
       res.status(201).send(part);
     }

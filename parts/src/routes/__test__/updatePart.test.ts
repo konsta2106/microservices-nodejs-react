@@ -1,6 +1,8 @@
 import request from 'supertest';
 import { app } from '../../app';
 import { natsWrapper } from '../../nats-wrapper';
+import mongoose from 'mongoose';
+import { Part } from '../../models/part'
 
 it('returns 404 if provided id not exist', async () => {
   await request(app)
@@ -124,3 +126,31 @@ it('publishesh an event', async () => {
 
   expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
+
+it('rejects update if part is reserved', async () => {
+  const cookie = global.signin()
+
+  const response = await request(app)
+  .post('/api/parts')
+  .set('Cookie', cookie)
+  .send({
+    title: 'test',
+    price: 20,
+    description: 'test desctiption',
+  })
+  .expect(201);
+
+  const part = await Part.findById(response.body.id)
+  part!.set({ orderId: mongoose.Types.ObjectId().toHexString() })
+  await part!.save()
+
+  await request(app)
+  .put(`/api/parts/${response.body.id}`)
+  .set('Cookie', cookie)
+  .send({
+    title: 'test2',
+    price: 20,
+    description: 'test desctiption',
+  })
+  .expect(400);
+})

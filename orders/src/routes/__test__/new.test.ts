@@ -18,7 +18,8 @@ it('returns an error if the ticket does not exist', async () => {
 it('returns an error if the tricket is reserved', async () => {
   const part = Part.build({
     title: 'Test',
-    price: 20
+    price: 20,
+    id: mongoose.Types.ObjectId().toHexString()
   })
   await part.save()
 
@@ -40,7 +41,8 @@ it('returns an error if the tricket is reserved', async () => {
 it('reserves a ticket', async () => {
   const part = Part.build({
     title: 'Test',
-    price: 20
+    price: 20,
+    id: mongoose.Types.ObjectId().toHexString()
   })
   await part.save()
 
@@ -55,7 +57,8 @@ it('reserves a ticket', async () => {
 it('emits an order created event', async () => {
   const part = Part.build({
     title: 'Test',
-    price: 20
+    price: 20,
+    id: mongoose.Types.ObjectId().toHexString()
   })
   await part.save()
 

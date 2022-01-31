@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 
 // Interface describing properties for the new user
 interface PartAttributes {
@@ -19,6 +20,8 @@ interface PartDoc extends mongoose.Document {
   price: number;
   description: string;
   createdBy: string;
+  version: number;
+  orderId?: string;
 }
 
 const partSchema = new mongoose.Schema(
@@ -38,18 +41,23 @@ const partSchema = new mongoose.Schema(
     createdBy: {
       type: String,
       required: true
+    },
+    orderId: {
+      type: String,
     }
   },
   {
     toJSON: {
       transform(doc, ret) {
-        delete ret.__v;
         ret.id = ret._id;
         delete ret._id;
       },
     },
   }
 );
+
+partSchema.set('versionKey', 'version')
+partSchema.plugin(updateIfCurrentPlugin)
 
 partSchema.statics.build = (attributes: PartAttributes) => {
   return new Part(attributes)

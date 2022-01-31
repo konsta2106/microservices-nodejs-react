@@ -8,6 +8,7 @@ it('returns the order', async () => {
   const part = Part.build({
     title: 'Test',
     price: 20,
+    id: mongoose.Types.ObjectId().toHexString()
   });
   await part.save();
 
@@ -34,6 +35,7 @@ it('returns 401 if fetching another user order', async () => {
   const part = Part.build({
     title: 'Test',
     price: 20,
+    id: mongoose.Types.ObjectId().toHexString()
   });
   await part.save();
 

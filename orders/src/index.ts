@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { app } from './app';
 import { natsWrapper } from './nats-wrapper';
+import { PartCreatedListener } from './events/listeners/part-created-listener';
+import { PartUpdatedListener } from './events/listeners/part-updated-listener';
 
 // Start server
 const startServer = async () => {
@@ -32,6 +34,10 @@ const startServer = async () => {
     });
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
+
+    new PartCreatedListener(natsWrapper.client).listen();
+    new PartUpdatedListener(natsWrapper.client).listen();
+
     // Connect to Database in kubernetes cluster
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,

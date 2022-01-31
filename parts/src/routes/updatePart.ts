@@ -4,6 +4,7 @@ import {
   validateRequest,
   requireAuth,
   NotAuthorizedError,
+  BadRequestError,
 } from '@motonet/common';
 import { Part } from '../models/part';
 import { body } from 'express-validator';
@@ -33,6 +34,9 @@ router.put(
       if (result.createdBy !== req.currentUser!.id) {
         throw new NotAuthorizedError();
       }
+      if(result.orderId) {
+        throw new BadRequestError('Part is reserved')
+      }
       result.set({
         title: req.body.title,
         price: req.body.price,
@@ -44,7 +48,8 @@ router.put(
         title: result.title,
         description: result.description,
         price: result.price,
-        createdBy: result.createdBy
+        createdBy: result.createdBy,
+        version: result.version
       })
       res.send(result);
     } catch (error) {
